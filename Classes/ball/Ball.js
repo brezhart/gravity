@@ -35,8 +35,8 @@ class Ball{
         }
     }
     updatePos(){
-        this.pos.x += Math.cos(this.speed.ang)*this.speed.val;
-        this.pos.y += Math.sin(this.speed.ang)*this.speed.val
+        this.pos.x += Math.cos(this.speed.ang)*this.speed.val/20;
+        this.pos.y += Math.sin(this.speed.ang)*this.speed.val/20;
     }
     draw(){
 

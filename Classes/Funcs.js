@@ -32,5 +32,7 @@ class Funcs{
         canvas.height = size.h;
         return canvas;
     }
+
+
 }
 let funcs = new Funcs();

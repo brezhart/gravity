@@ -1,7 +1,8 @@
 class World{
     constructor(){
-        this.gravityCoef = 0.2;
+        this.gravityCoef = 1;
         this.balls = [];
+        this.isPaused = false;
     }
     initVisual(...args){
         console.log("THERE", ...args);
@@ -29,5 +30,14 @@ class World{
         for (let i = 0; i < this.balls.length; i++){
             this.balls[i].updatePos()
         }
+    }
+    continueGame(){
+        console.log("CONTINUE");
+        this.isPaused = false;
+
+    }
+    stopGame(){
+        console.log("STOPPING")
+        this.isPaused = true;
     }
 }
