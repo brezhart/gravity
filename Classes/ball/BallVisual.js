@@ -18,7 +18,7 @@ class BallVisual{
 
     drawBall(){
         let ctx = this.ball.world.visual.mainContext;
-        ctx.beginPath()
+        ctx.beginPath();
         ctx.fillStyle = "#000000";
         ctx.arc(this.ball.pos.x, this.ball.pos.y, this.ball.radius, 0, Math.PI*2);
         ctx.fill();

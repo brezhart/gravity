@@ -34,6 +34,12 @@ class WorldVisual{
         if (this.hasBalltoView){
             this.parentNode.style.left = (this.size.w/2 - this.ballToView.pos.x) + "px";
             this.parentNode.style.top = (this.size.h/2 - this.ballToView.pos.y) + "px";
+            this.thirdContext.beginPath();
+            this.thirdContext.fillStyle = "blue";
+            this.thirdContext.arc(this.ballToView.pos.x,this.ballToView.pos.y,
+                this.ballToView.radius, 0, Math.PI*2);
+            this.thirdContext.fill()
+            this.thirdContext.closePath();
         }
 
         this.mainContext.clearRect(0,0,this.size.w,this.size.h);

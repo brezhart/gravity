@@ -1,4 +1,4 @@
-class ClickHandler{
+class MainHandler{
     constructor(w,h,parent){
         this.w = w;
         this.h = h;
@@ -9,6 +9,10 @@ class ClickHandler{
         div.style.height = h + "px";
         div.style.width = w + "px";
         parent.appendChild(div);
+
+        window.addEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
+        window.addEventListener('keypress', handlerFunctions.keyBoardHandler.bind(this));
+        parent.addEventListener('mousemove', this.updateMouseMove.bind(this));
     }
     // TODO: rewrite that shit coded code!
     updateMouseMove(event) {
@@ -16,14 +20,11 @@ class ClickHandler{
         this.mousePos.x = event.offsetX;
         this.mousePos.y = event.offsetY;
     }
-    setMousePosHandler(){
-        console.log("123");
-        window.addEventListener('mousemove',this.updateMouseMove.bind(this));
-    }
     connectToWorld(world){
         this.world = world;
     }
     pickBall(){
+        console.log('pick');
         let mouseX = this.mousePos.x;
         let mouseY = this.mousePos.y;
         let fl = false;
@@ -31,7 +32,7 @@ class ClickHandler{
         let pickedBall;
         for (let i = 0; i <  this.world.balls.length; i++){
             let ball = this.world.balls[i];
-            let dist = funcs.dist(mouseX,mouseY,ball.pos.x,ball.pos.y);
+            let dist = funcs.dist(mouseX,mouseY,ball.pos.x,ball.pos.y) -2;
             if (dist < ball.radius) {
                 if (!fl) {
                     pickedBall = ball;
@@ -60,32 +61,5 @@ class ClickHandler{
             ctx.fill();
             ctx.closePath();
         }
-    }
-    //TODO: Rewrite this part :downarrow:
-    stopGameButtonHandler(event){
-        console.log(event.keyCode);
-        if (event.keyCode == 49){
-
-           if (this.world.isPaused){
-               this.world.continueGame();
-           } else{
-               this.world.stopGame();
-           }
-        } else if(event.keyCode == 50){
-            this.world.visual.hasBalltoView = false;
-            this.world.visual.parentNode.style.top = 0 + "px";
-            this.world.visual.parentNode.style.left = 0 + "px";
-        }
-    }
-    clickToSelect(){
-        if (this.ball !== 0){
-            this.world.visual.hasBalltoView = true;
-            this.world.visual.ballToView = this.ball;
-        }
-    }
-
-    setPauseKeyBind(){
-        window.addEventListener('click', this.clickToSelect.bind(this));
-        window.addEventListener('keypress', this.stopGameButtonHandler.bind(this));
     }
 }
