@@ -10,11 +10,20 @@ class MainHandler{
         div.style.width = w + "px";
         parent.appendChild(div);
 
-        window.addEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
         window.addEventListener('keypress', handlerFunctions.keyBoardHandler.bind(this));
         parent.addEventListener('mousemove', this.updateMouseMove.bind(this));
     }
     // TODO: rewrite that shit coded code!
+    setUpClick(){
+        window.addEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
+    }
+    removeClick(){
+        console.log("REMOVED");
+        window.removeEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
+    }
+
+
+
     updateMouseMove(event) {
 
         this.mousePos.x = event.offsetX;
@@ -23,17 +32,22 @@ class MainHandler{
     connectToWorld(world){
         this.world = world;
     }
+
     pickBall(){
-        console.log('pick');
         let mouseX = this.mousePos.x;
         let mouseY = this.mousePos.y;
         let fl = false;
         let distToPickedBall;
         let pickedBall;
+
+
         for (let i = 0; i <  this.world.balls.length; i++){
             let ball = this.world.balls[i];
-            let dist = funcs.dist(mouseX,mouseY,ball.pos.x,ball.pos.y) -2;
-            if (dist < ball.radius) {
+            let visaulX = this.world.visual.zoom.getVisualX(ball.pos.x);
+            let visaulY = this.world.visual.zoom.getVisualY(ball.pos.y);
+            let visaulRadius = this.world.visual.zoom.getVisualRadius(ball.radius);
+            let dist = funcs.dist(mouseX,mouseY,visaulX,visaulY) -2;
+            if (dist < visaulRadius) {
                 if (!fl) {
                     pickedBall = ball;
                     distToPickedBall = dist;
@@ -45,21 +59,19 @@ class MainHandler{
             }
         }
 
+
         if (fl){
             this.ball = pickedBall;
         } else {
             this.ball = 0;
         }
 
+
         let ctx = this.world.visual.thirdContext;
         ctx.clearRect(0,0,this.world.visual.size.w,this.world.visual.size.h);
         if (fl){
-            // console.log(this.wolrd.visual.size.x,this.wolrd.visual.size.y);
-            ctx.beginPath();
-            ctx.fillStyle = "red";
-            ctx.arc(pickedBall.pos.x, pickedBall.pos.y, pickedBall.radius, 0, Math.PI*2);
-            ctx.fill();
-            ctx.closePath();
+            this.world.visual.arc(ctx,pickedBall.pos.x, pickedBall.pos.y, pickedBall.radius, 'red');
+            this.world.visual.arcAround(ctx,pickedBall.pos.x, pickedBall.pos.y, pickedBall.radius, 'red');
         }
     }
 }

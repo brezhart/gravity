@@ -2,4 +2,9 @@ canvas{
     position: absolute;
     top: 0;
     left: 0;
+    transition-duration: 0.5s;
 }
+
+/*#canvasCont{*/
+    /*transition-duration: 0.5s;*/
+/*}*/

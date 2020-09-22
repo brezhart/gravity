@@ -1,11 +1,12 @@
 class Ball{
-    constructor(pos,speed,mass,radius,locked,attractOthers){
+    constructor(pos,speed,mass,radius, color = "blue" , locked = false,attractOthers = true){
 
         this.pos = pos;
         this.speed = speed;
         this.mass = mass;
         this.radius = radius;
-        this.locked = locked || false;
+        this.locked = locked;
+        this.color = color;
         this.attractOthers = attractOthers;
         if (typeof attractOthers === 'undefined'){
             this.attractOthers = true;
@@ -37,14 +38,5 @@ class Ball{
     updatePos(){
         this.pos.x += Math.cos(this.speed.ang)*this.speed.val/20;
         this.pos.y += Math.sin(this.speed.ang)*this.speed.val/20;
-    }
-    draw(){
-
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(200,2000,200,1)';
-        ctx.arc(this.pos.x,this.pos.y,this.radius,0,Math.PI*2);
-        ctx.strokeStyle = "rgba(200,2000,200,0.5)";
-        ctx.fill();
-        ctx.closePath();
     }
 }

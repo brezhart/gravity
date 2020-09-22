@@ -13,14 +13,14 @@ class World{
         ball.world = this;
         this.balls.push(ball);
     }
-    addClaster(xPair,yPair,amount, speed,mass,radius,locked, attractOthers){
+    addClaster(xPair,yPair,amount, speed,mass,radius,color, locked, attractOthers){
         for (let i = 0; i < amount; i++){
-            let newSpeed = {}
+            let newSpeed = {};
             Object.assign(newSpeed,speed);
             let pos = new Pos( funcs.random(xPair.first,xPair.second),
                 funcs.random(yPair.first,yPair.second));
 
-            this.addBall(pos, newSpeed, mass, radius, locked,attractOthers);
+            this.addBall(pos, newSpeed, mass, radius, color == "random" ? funcs.getRandomColor() : color,  locked,attractOthers);
         }
     }
     tick(){
@@ -37,7 +37,7 @@ class World{
 
     }
     stopGame(){
-        console.log("STOPPING")
+        console.log("STOPPING");
         this.isPaused = true;
     }
 }

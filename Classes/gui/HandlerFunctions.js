@@ -5,23 +5,23 @@
 // требуется праводить операции с иветном
 
 
-class HandlerFunctions{
-    keyBoardHandler(event){
-
-        switch (event.code){
+class HandlerFunctions {
+    keyBoardHandler(event) {
+        switch (event.code) {
             case "KeyE":
-                if (this.world.isPaused){
+                if (this.world.isPaused) {
                     this.world.continueGame();
-                } else{
+                } else {
                     this.world.stopGame();
                 }
                 break;
             case "KeyQ":
                 this.world.visual.hasBalltoView = false;
-                this.world.visual.parentNode.style.top = 0 + "px";
-                this.world.visual.parentNode.style.left = 0 + "px";
+                this.world.visual.zoom.centerPos = new Pos(0, 0);
                 break;
         }
     }
+
 }
+
 let handlerFunctions = new HandlerFunctions();
