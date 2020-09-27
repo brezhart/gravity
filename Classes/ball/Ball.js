@@ -6,22 +6,23 @@ class Ball{
         this.mass = mass;
         this.radius = radius;
         this.locked = locked;
-        this.color = color;
+        this.color = color == "random" ? funcs.getRandomColor() : color;
         this.attractOthers = attractOthers;
         if (typeof attractOthers === 'undefined'){
             this.attractOthers = true;
         }
         this.world = {};
         this.visual = new BallVisual(this);
-        this.id = funcs.randomInt(0,100);
+        this.id = Math.random();
     }
     updateSpeed() {
         if (!this.locked) {
             for (let i = 0; i < this.world.balls.length; i++) {
                 let secondBall = this.world.balls[i];
-                if (secondBall.attractOthers) {
-                    let dist = funcs.distPos(this.pos, secondBall.pos);
-                    if (dist > this.radius + secondBall.radius) {
+                if (secondBall.attractOthers && (this.id !== secondBall.id)) {
+                    let dist = Math.max(funcs.distPos(this.pos, secondBall.pos),(this.radius + secondBall.radius));
+                    // if (dist > (this.radius + secondBall.radius)) {
+                    if (true) {
                         let newAng = funcs.angle360(this.pos.x, this.pos.y, secondBall.pos.x, secondBall.pos.y);
                         let newForce = (this.mass * secondBall.mass) / (dist*dist);
                         let actualForce = (newForce / this.mass) * this.world.gravityCoef;
@@ -36,7 +37,7 @@ class Ball{
         }
     }
     updatePos(){
-        this.pos.x += Math.cos(this.speed.ang)*this.speed.val/20;
-        this.pos.y += Math.sin(this.speed.ang)*this.speed.val/20;
+        this.pos.x += Math.cos(this.speed.ang)*this.speed.val/2;
+        this.pos.y += Math.sin(this.speed.ang)*this.speed.val/2;
     }
 }

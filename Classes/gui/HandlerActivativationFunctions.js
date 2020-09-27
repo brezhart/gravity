@@ -6,11 +6,13 @@
 
 class HandlerActivativationFunctions {
     clickHandler(){
+        console.log("CLICK");
         if (this.ball !== 0){
             this.world.visual.hasBalltoView = true;
             this.world.visual.zoom.centerPos = this.ball.pos;
             this.world.visual.ballToView = this.ball;
         }
     }
+
 }
 let handlerActivationFunctions = new HandlerActivativationFunctions();

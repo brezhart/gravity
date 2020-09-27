@@ -4,7 +4,6 @@ class Zoom{
         this.zoomCoef = 1;
         this.centerPos = new Pos(0,0);
         window.addEventListener('wheel', this.zooming.bind(this));
-        this.buttons = new Buttons(this);
     }
 
 
@@ -12,7 +11,7 @@ class Zoom{
     zooming(event){
         let mult = 1 + (Math.sqrt(Math.abs(event.deltaY))/100 * (event.deltaY)/(Math.abs(event.deltaY)));
         this.multiplyZoom(mult);
-        console.log(mult,this.zoomCoef);
+
     }
     multiplyZoom(mult){
         this.zoomCoef*=mult;

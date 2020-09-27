@@ -8,29 +8,32 @@ class MainHandler{
         this.ball = 0;
         div.style.height = h + "px";
         div.style.width = w + "px";
+        this.pickedEventListeners = [];
+        this.div = div;
         parent.appendChild(div);
-
         window.addEventListener('keypress', handlerFunctions.keyBoardHandler.bind(this));
-        parent.addEventListener('mousemove', this.updateMouseMove.bind(this));
+        parent.addEventListener('mousemove', this.updateMouseCords.bind(this));
     }
-    // TODO: rewrite that shit coded code!
-    setUpClick(){
-        window.addEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
-    }
-    removeClick(){
-        console.log("REMOVED");
-        window.removeEventListener('click', handlerActivationFunctions.clickHandler.bind(this));
+    addBallPickerEvent(){
+        this.pickedEventListeners.push(new EventCopy('click', handlerActivationFunctions.clickHandler.bind(this),window));
     }
 
-
-
-    updateMouseMove(event) {
-
+    updateMouseCords(event) {
         this.mousePos.x = event.offsetX;
         this.mousePos.y = event.offsetY;
     }
     connectToWorld(world){
         this.world = world;
+    }
+    removePickedEventListeners(){
+        for (let i = 0; i < this.pickedEventListeners.length; i++){
+            this.pickedEventListeners[i].remove();
+        }
+        this.pickedEventListeners = [];
+    };
+    addToPickedEventListeners(...eventToAdd){
+
+        this.pickedEventListeners.push(...eventToAdd);
     }
 
     pickBall(){

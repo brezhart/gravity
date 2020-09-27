@@ -12,6 +12,7 @@ class WorldVisual {
         this.ballToView = false;
         this.zoom = new Zoom(this);
 
+
         this.mainContext = ctx;
         this.size = size;
         this.world = world;
@@ -55,12 +56,11 @@ class WorldVisual {
     }
 
     mainWorldDraw() {
-
         this.mainContext.clearRect(0, 0, this.size.w, this.size.h);
 
         for (let i = 0; i < this.world.balls.length; i++) {
             this.world.balls[i].visual.drawBall();
-            this.world.balls[i].visual.drawTail();
+            // this.world.balls[i].visual.drawTail();
         }
         if (this.hasBalltoView) {
             this.arc(this.mainContext, this.ballToView.pos.x, this.ballToView.pos.y, this.ballToView.radius, "pink");

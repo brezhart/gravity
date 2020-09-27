@@ -40,6 +40,12 @@ class Funcs{
         }
         return color;
     }
+    addTwoSpeed(speed1, speed2,coef1 = 1, coef2 = 1){
+        let x = Math.cos(speed1.ang) * speed1.val * coef1 + Math.cos(speed2.ang) * speed2.val * coef2;
+        let y = Math.sin(speed1.ang) * speed1.val * coef1 + Math.sin(speed2.ang) * speed2.val * coef2;
+        let speedOut = new Speed(funcs.dist(0, 0, x, y),funcs.angle360(0, 0, x, y));
+        return speedOut;
+    }
 
 
 
