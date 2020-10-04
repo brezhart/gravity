@@ -76,44 +76,50 @@ class HandlerFunctions {
         let thisSave = this;
 
         function grabStart(pos) {
-            thisSave.zoom.lockUp();
+            thisSave.zoom.blockZooming();
             startPos = thisSave.zoom.getRealPos(pos);
             speedPos = thisSave.zoom.getRealPos(pos);
             console.log(startPos.x, startPos.y);
             thisSave.arc(thisSave.secondContext, startPos.x, startPos.y, 10);
+            thisSave.world.addFunctionToCall(makeOrbitPrediction);
         }
 
         function grabMove(pos) {
             speedPos = thisSave.zoom.getRealPos(pos);
+
+            makeOrbitPrediction();
+        }
+        function  makeOrbitPrediction() {
             thisSave.clear(thisSave.secondContext);
             thisSave.arc(thisSave.secondContext, startPos.x, startPos.y, 10);
-
-            let parts = 100;
+            let parts = 50;
             let ball = new Ball(new Pos(startPos.x, startPos.y), new Speed(Math.max(funcs.distPos(startPos, speedPos), 1) / 10, funcs.angle360(startPos.x, startPos.y, speedPos.x, speedPos.y) + Math.PI), 1, 1);
             let lastPos = new Pos(startPos.x, startPos.y);
             ball.world = world;
             for (let i = 0; i < parts; i++) {
                 ball.updateSpeed();
                 ball.updatePos();
+                ball.updatePos(); // By adding more pos updating, we make prediction longer, but less accurate
                 thisSave.line(thisSave.secondContext, lastPos, ball.pos);
                 lastPos.x = ball.pos.x;
                 lastPos.y = ball.pos.y;
             }
             thisSave.line(thisSave.secondContext, startPos, speedPos, 'red');
-
         }
 
         function grabEnd(event) {
             thisSave.clear(thisSave.secondContext);
-            thisSave.zoom.lockDown();
+            thisSave.zoom.unblockZooming();
             world.addBall(startPos, new Speed(Math.max(funcs.distPos(startPos, speedPos), 1) / 10, funcs.angle360(startPos.x, startPos.y, speedPos.x, speedPos.y) + Math.PI), 1000, 10);
 
         }
-
-        funcs.dragAndDrop(grabStart, grabMove, grabEnd);
-
+        function endHandler(){
+            thisSave.clear(thisSave.secondContext);
+            thisSave.zoom.unblockZooming();
+            this.world.removeFunctionsToCall();
+        }
+        funcs.dragAndDrop(grabStart, grabMove, grabEnd, endHandler.bind(thisSave));
     }
-
 }
 
 let handlerFunctions = new HandlerFunctions();

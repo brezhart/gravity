@@ -36,10 +36,10 @@ class Zoom{
     getRealPos(pos){
         return new Pos(this.getRealX(pos.x),this.getRealY(pos.y));
     }
-    lockUp(){
+    blockZooming(){ // Block zooming
         this.locked = true;
     }
-    lockDown(){
+    unblockZooming(){ // Unblock zooming
         this.locked = false;
     }
 }

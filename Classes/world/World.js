@@ -3,7 +3,9 @@ class World{
         this.gravityCoef = 0.2;
         this.balls = [];
         this.isPaused = false;
+        this.functionsToCall = []; // Function to call everyTick;
     }
+
     initVisual(...args){
         console.log("THERE", ...args);
         this.visual = new WorldVisual(...args);
@@ -13,6 +15,13 @@ class World{
         ball.world = this;
         this.balls.push(ball);
     }
+    removeFunctionsToCall() {
+        this.functionsToCall = [];
+    }
+    addFunctionToCall(f){
+        this.functionsToCall.push(f);
+    }
+
     addClaster(xPair,yPair,amount, speed,mass,radius,color, locked, attractOthers){
         for (let i = 0; i < amount; i++){
             let newSpeed = {};
@@ -29,6 +38,10 @@ class World{
         }
         for (let i = 0; i < this.balls.length; i++){
             this.balls[i].updatePos()
+        }
+        for (let i = 0; i < this.functionsToCall.length; i++){
+            console.log(this.functionsToCall);
+            this.functionsToCall[i]();
         }
     }
     continueGame(){

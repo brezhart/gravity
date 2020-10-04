@@ -50,12 +50,12 @@ class Funcs{
     }
     dragAndDrop(start,move,end,removeFunc = function(){},element = window) {
         function setDragAnDrop() {
-            mainHandler.addToPickedEventListeners(new EventCopy('mousedown',startDragAndDrop,element))
+            mainHandler.addToPickedEventListeners(new EventCopy('mousedown',startDragAndDrop,element,removeFunc))
         }
         function startDragAndDrop(event) {
             start(new Pos(event.offsetX,event.offsetY));
-            mainHandler.addToPickedEventListeners(new EventCopy('mousemove', moveDragAndDrop,element));
-            mainHandler.addToPickedEventListeners(new EventCopy('mouseup', endDrogAndDrop,element));
+            mainHandler.addToPickedEventListeners(new EventCopy('mousemove', moveDragAndDrop,element,removeFunc));
+            mainHandler.addToPickedEventListeners(new EventCopy('mouseup', endDrogAndDrop,element,removeFunc));
         }
         function moveDragAndDrop() {
             move(new Pos(event.offsetX,event.offsetY));
