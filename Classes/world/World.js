@@ -40,23 +40,41 @@ class World{
         console.log("STOPPING");
         this.isPaused = true;
     }
+
+    getMovedForce(pos){ // Calculate where point with mass 1 will be after 1 tick
+        const thisX = pos.x;
+        const thisY  = pos.y;
+        const thisMass = 1;
+        for (var i = 0; i < this.balls.length; i++) {
+            let secondBall = this.balls[i];
+            let        dist = Math.max(funcs.distPos(pos, secondBall.pos),(secondBall.radius)/8);
+            let      newAng = funcs.angle360(thisX, thisY, secondBall.pos.x, secondBall.pos.y);
+            let    newForce = (thisMass * secondBall.mass) / (dist*dist);
+            let actualForce = (newForce / thisMass) * this.gravityCoef;
+            pos.x += Math.cos(newAng) * actualForce*20;
+            pos.y += Math.sin(newAng) * actualForce*20;
+        }
+    }
+
+
+
     addGalaxy(pos,speed, mass,radius,color, amountOfMoons, maxOrbitSize, maxMoonMass){
         this.addBall(pos, speed, mass, 30, color);
         for (let i = 0; i < amountOfMoons; i++){
 
             let orbitSize = funcs.randomInt(radius+5,maxOrbitSize);
             let angleOfOrbit = Math.PI*2 * Math.random();
-            console.log(maxMoonMass);
+
             let moonMass = funcs.random(maxMoonMass.first, maxMoonMass.second);
-            console.log(moonMass, orbitSize);
+
             let orbitSpeed = Math.sqrt(mass*this.gravityCoef*2/(orbitSize));
             let moonSpeed  = new Speed(orbitSpeed, angleOfOrbit+Math.PI/2);
             let MoonSpeed = funcs.addTwoSpeed(new Speed(orbitSpeed, angleOfOrbit+Math.PI/2),speed);
-            console.log(orbitSpeed,orbitSpeed);
+
 
             this.addBall(
                 new Pos(pos.x+orbitSize*Math.cos(angleOfOrbit), pos.y+orbitSize*Math.sin(angleOfOrbit)),
-                MoonSpeed, moonMass,1*moonMass,color, false, true);
+                MoonSpeed, moonMass,1*moonMass,color, false, false);
         }
 
     }

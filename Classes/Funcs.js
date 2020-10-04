@@ -26,11 +26,13 @@ class Funcs{
         if (theta < 0) theta = 2*Math.PI + theta; // range [0, 360)
         return theta;
     }
-    canvasCreator(size){
+    canvasCreator(size, parent){
         let canvas = document.createElement('canvas');
         canvas.width = size.w;
         canvas.height = size.h;
-        return canvas;
+        let ctx = canvas.getContext('2d');
+        parent.appendChild(canvas);
+        return ctx;
     }
     getRandomColor() {
         var letters = '0123456789ABCDEF';
@@ -46,8 +48,29 @@ class Funcs{
         let speedOut = new Speed(funcs.dist(0, 0, x, y),funcs.angle360(0, 0, x, y));
         return speedOut;
     }
+    dragAndDrop(start,move,end,removeFunc = function(){},element = window) {
+        function setDragAnDrop() {
+            mainHandler.addToPickedEventListeners(new EventCopy('mousedown',startDragAndDrop,element))
+        }
+        function startDragAndDrop(event) {
+            start(new Pos(event.offsetX,event.offsetY));
+            mainHandler.addToPickedEventListeners(new EventCopy('mousemove', moveDragAndDrop,element));
+            mainHandler.addToPickedEventListeners(new EventCopy('mouseup', endDrogAndDrop,element));
+        }
+        function moveDragAndDrop() {
+            move(new Pos(event.offsetX,event.offsetY));
+
+        }
+        function endDrogAndDrop() {
+            mainHandler.removePickedEventListeners();
+            end();
+            setDragAnDrop();
+        }
+        setDragAnDrop();
+    }
 
 
 
 }
 let funcs = new Funcs();
+

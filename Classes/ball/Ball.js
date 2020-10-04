@@ -17,27 +17,41 @@ class Ball{
     }
     updateSpeed() {
         if (!this.locked) {
-            for (let i = 0; i < this.world.balls.length; i++) {
+
+            // toOptimize
+            let x = Math.cos(this.speed.ang) * this.speed.val;
+            let y = Math.sin(this.speed.ang) * this.speed.val;
+            const thisX = this.pos.x;
+            const thisY  = this.pos.y;
+            const thisMass = this.mass;
+            const thisId = this.id;
+            for (var i = 0; i < this.world.balls.length; i++) {
                 let secondBall = this.world.balls[i];
-                if (secondBall.attractOthers && (this.id !== secondBall.id)) {
-                    let dist = Math.max(funcs.distPos(this.pos, secondBall.pos),(this.radius + secondBall.radius));
-                    // if (dist > (this.radius + secondBall.radius)) {
-                    if (true) {
-                        let newAng = funcs.angle360(this.pos.x, this.pos.y, secondBall.pos.x, secondBall.pos.y);
-                        let newForce = (this.mass * secondBall.mass) / (dist*dist);
-                        let actualForce = (newForce / this.mass) * this.world.gravityCoef;
-                        let x = Math.cos(this.speed.ang) * this.speed.val + Math.cos(newAng) * actualForce;
-                        let y = Math.sin(this.speed.ang) * this.speed.val + Math.sin(newAng) * actualForce;
-                        this.speed.val = funcs.dist(0, 0, x, y);
-                        this.speed.ang = funcs.angle360(0, 0, x, y);
-                        // console.log("VAL:", this.speed.val);
-                    }
+                if (secondBall.attractOthers && (thisId !== secondBall.id)) {
+                    let        dist = Math.max(funcs.distPos(this.pos, secondBall.pos),(this.radius + secondBall.radius)/2);
+                    let      newAng = funcs.angle360(thisX, thisY, secondBall.pos.x, secondBall.pos.y);
+                    // let    newForce = (thisMass * secondBall.mass) / (dist*dist);
+                    // let actualForce = (newForce / thisMass) * this.world.gravityCoef;
+                    let    newForce = (secondBall.mass) / (dist*dist);
+                    let actualForce = (newForce) * this.world.gravityCoef;
+
+                    x += Math.cos(newAng) * actualForce;
+                    y += Math.sin(newAng) * actualForce;
+
                 }
             }
+            this.speed.val = funcs.dist(0, 0, x, y);
+            this.speed.ang = funcs.angle360(0, 0, x, y);
         }
+
     }
+
     updatePos(){
         this.pos.x += Math.cos(this.speed.ang)*this.speed.val/2;
         this.pos.y += Math.sin(this.speed.ang)*this.speed.val/2;
     }
+
+
+
+
 }
