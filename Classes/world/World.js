@@ -45,7 +45,7 @@ class World{
         }
     }
     continueGame(){
-        console.log("CONTINUE");
+
         this.isPaused = false;
 
     }
