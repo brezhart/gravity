@@ -9,14 +9,14 @@ class WorldVisual {
         this.world = world;
 
 
+        let dctx = funcs.canvasCreator(size,parentNode);
+        this.fourthContext = dctx;
         let ctx = funcs.canvasCreator(size,parentNode);
         this.mainContext = ctx;
         let sctx = funcs.canvasCreator(size,parentNode);
         let tctx = funcs.canvasCreator(size,parentNode);
         this.thirdContext = tctx;
 
-        let dctx = funcs.canvasCreator(size,parentNode);
-        this.fourthContext = dctx;
 
         sctx.strokeStyle = "rgba(100,100,100,0.1)";
         this.secondContext = sctx;
@@ -63,8 +63,10 @@ class WorldVisual {
 
     mainWorldDraw() {
         this.clear(this.mainContext);
+        this.clear(this.fourthContext);
 
         for (let i = 0; i < this.world.balls.length; i++) {
+            this.world.balls[i].visual.drawTail();
             this.world.balls[i].visual.drawBall();
             // this.world.balls[i].visual.drawTail();
         }
@@ -72,6 +74,7 @@ class WorldVisual {
             this.arc(this.mainContext, this.ballToView.pos.x, this.ballToView.pos.y, this.ballToView.radius, "pink");
             this.arcAround(this.mainContext, this.ballToView.pos.x, this.ballToView.pos.y, this.ballToView.radius, "pink");
         }
+
     }
 
 
